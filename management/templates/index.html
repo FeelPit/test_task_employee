@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Employees Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/0ed658fb53.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/mithril/mithril.js"></script>    
+</head>
+<style>
+    @font-face {
+        font-family: Montserrat-Bold;
+        src: url(Montserrat/static/Montserrat-Bold.ttf);
+    }
+    @font-face {
+        font-family: Montserrat;
+        src: url(Montserrat/static/Montserrat-SemiBold.ttf);
+    }
+    html, body{
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        color: #3a3a3a;        
+    }
+    .main_cont{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    #func{
+        order:1;
+        flex-grow: 1;
+        display: flex;
+        flex-direction:column;
+        height: 80%;
+        margin-top: 5%;
+    }
+    #get{
+        order:1;
+        margin-left: 20%;
+    }
+    #get_by_id{
+        order:2;
+        margin-left: 20%;
+        padding-top: 5%;
+    }
+    #put{
+        order:3;
+        margin-left: 20%;
+        padding-top: 5%;
+    }
+    #delete{
+        order:4;
+        margin-left: 20%;
+        padding-top: 5%;
+    }
+    #post{
+        order:5;
+        margin-left: 20%;
+        padding-top: 5%;
+    }
+    #res{
+        order:2;
+        flex-grow: 1;
+        display: flex;
+        flex-direction:column;
+        height: 80%;
+        margin-top: 5%;
+    }
+    #mark{
+        height:40px;
+        width:80px;
+        font-size:12px;
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+</style>
+<body>
+    <div class="main_cont">
+        <div id="func">
+            <div id="get">
+                <button type="button" class="btn btn-outline-success" onclick="getAll()" style="width:120px;">
+                    <div id="mark">
+                        <p style="color:#29c714">GET</p>
+                        <p>List of employees</p>
+                    </div>
+                </button>
+            </div>
+            <div id="get_by_id">
+                <form style="margin-left:20px; order: 2;" id="get_by_id_emp">
+                    <button type="submit" class="btn btn-outline-success" style="width:120px; height:70px; order: 1;">
+                        <div id="mark">
+                            <p style="color:#29c714">GET</p>
+                            <p>List of employees by id</p> 
+                        </div>
+                    </button>
+                        <input type="number" id="employee_id" placeholder="id">
+                </form>
+            </div>
+            <div id="put">
+                <button type="button" class="btn btn-outline-primary" style="width:120px; height:70px">
+                    <div id="mark">
+                        <p style="color:$blue-500">PUT</p>
+                        <p>Change employees field(s)</p>
+                    </div>
+                </button>
+            </div>
+            <div id="delete">
+                <button type="button" class="btn btn-outline-danger" style="width:130px;">
+                    <div id="mark">
+                        <p style="color:#eb3939">DELETE</p>
+                        <p style="padding-left: 5px;">Delete an employee</p>
+                    </div>
+                </button>
+            </div>
+            <div id="post">
+                <button type="button" class="btn btn-outline-warning" style="width:120px;">
+                    <div id="mark">
+                        <p style="color: $yellow-300">POST</p>
+                        <p>Add an employee</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div id="res">
+            <div id="pers">
+            </div>
+        </div>
+    </div>
+    <script>
+
+        var m = request('mithril')
+
+        function getAll() {
+            return m.request({
+                method: "GET",
+                url: "http://127.0.0.1:8080/employee/"
+            }).then(function(result) {
+                    document.getElementById("pers").innerHTML = "<div></div>"
+                for (var i = 0; i < result.length; i++) {
+                    document.getElementById("pers").innerHTML += 
+                    "<p>" + result[i].id + "</p>" + 
+                    "<p>" + result[i].name + "</p>" + 
+                    "<p>" + result[i].phone + "</p>" + 
+                    "<p>" + result[i].city + "</p>" + 
+                    "<p>" + result[i].country + "</p> </div>"
+                }
+            })}
+        function getById() {
+            return m.request({
+                method: "GET",
+                url: "http://127.0.0.1:8000/employee/"
+            }).then(function(result) {
+                    document.getElementById("pers").innerHTML = "<div></div>"
+                    document.getElementById("pers").innerHTML += 
+                    "<p>" + result[i].id + "</p>" + 
+                    "<p>" + result[i].name + "</p>" + 
+                    "<p>" + result[i].phone + "</p>" + 
+                    "<p>" + result[i].city + "</p>" + 
+                    "<p>" + result[i].country + "</p>"
+                }
+            )}
+            const form  = document.getElementById('get_by_id_emp');
+
+            form.addEventListener('submit', (event) => {
+                getById(form.elements['employee_id'])
+            });
+
+    </script>
+</body>
